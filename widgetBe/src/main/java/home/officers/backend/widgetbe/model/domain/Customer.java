@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@ToString
-@RequiredArgsConstructor
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 @Table(name = "customer")
 public class Customer {
 
