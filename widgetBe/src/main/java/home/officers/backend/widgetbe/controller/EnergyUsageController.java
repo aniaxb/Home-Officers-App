@@ -6,10 +6,7 @@ import home.officers.backend.widgetbe.model.dto.EnergyUsageDto;
 import home.officers.backend.widgetbe.service.EnergyUsageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.TreeMap;
 
@@ -25,12 +22,12 @@ public class EnergyUsageController {
         return service.computeConsumedEnergyCost(customer);
     }
 
-    @GetMapping(path = "/chart/{customerId}/{format}/{startTime}/{endTime}")
+    @GetMapping(path = "/chart/{customerId}")
     public ResponseEntity<EnergyUsageDto> energyUsage(
             @PathVariable Long customerId,
-            @PathVariable String format,
-            @PathVariable String startTime,
-            @PathVariable String endTime
+            @RequestParam String format,
+            @RequestParam String startTime,
+            @RequestParam  String endTime
     ) {
         return ResponseEntity.ok(service.getEnergyUsage(customerId, format, startTime, endTime));
     }
