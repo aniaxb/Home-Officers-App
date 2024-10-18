@@ -1,4 +1,4 @@
-export interface EnergyUsage {
+export interface TopPercentage {
     customer: {
         customerName: string;
         customerAddress: string;
