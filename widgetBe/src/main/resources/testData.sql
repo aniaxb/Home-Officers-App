@@ -1,6 +1,6 @@
-INSERT INTO customer (name) VALUES ('John Doe');
-INSERT INTO customer (name) VALUES ('Jane Smith');
-INSERT INTO customer (name) VALUES ('ACME Corporation');
+INSERT INTO customer (customer_name, customer_address) VALUES ('John Doe', '123 Elm St, Springfield, IL');
+INSERT INTO customer (customer_name, customer_address) VALUES ('Jane Smith', '456 Oak St, Springfield, IL');
+INSERT INTO customer (customer_name, customer_address) VALUES ('ACME Corporation', '789 Maple St, Springfield, IL');
 
 -- Insert sample energy usage data (2004, 2005, 2006)
 
