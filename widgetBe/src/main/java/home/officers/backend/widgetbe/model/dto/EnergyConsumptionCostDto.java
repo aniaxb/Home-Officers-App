@@ -5,7 +5,6 @@ import java.util.TreeMap;
 public record EnergyConsumptionCostDto(
         CustomerDto customerDto,
         Double EnergyUsage,
-        Double EnergyConsumptionCost,
-        TreeMap<String, Double> energyConsumptionCostChart
+        Double EnergyConsumptionCost
 ) {
 }
