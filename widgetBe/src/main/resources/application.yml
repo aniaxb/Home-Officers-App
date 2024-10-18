@@ -11,6 +11,8 @@ spring:
     url: ${MYSQL_URL}
 
   jpa:
+    hibernate:
+      ddl-auto: create-drop
     open-in-view: false
     properties:
       hibernate:
