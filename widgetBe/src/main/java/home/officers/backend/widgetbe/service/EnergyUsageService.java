@@ -1,6 +1,8 @@
 package home.officers.backend.widgetbe.service;
 
+import home.officers.backend.widgetbe.model.domain.Customer;
 import home.officers.backend.widgetbe.model.domain.EnergyUsageLog;
+import home.officers.backend.widgetbe.model.dto.EnergyConsumptionCostDto;
 import home.officers.backend.widgetbe.model.dto.EnergyUsageDto;
 import home.officers.backend.widgetbe.repository.EnergyUsageLogRepository;
 import home.officers.backend.widgetbe.util.Mapper;
@@ -20,11 +22,15 @@ public class EnergyUsageService {
     private final EnergyUsageLogRepository repository;
     private final CustomerService customerService;
 
-    public TreeMap<String, Double> computeConsumedEnergyCost(Long customer_id) {
-        List<EnergyUsageLog> energyUsageLog = repository.findByCustomerId(customer_id)
-                .orElse(new ArrayList<EnergyUsageLog>());
+    public EnergyConsumptionCostDto computeConsumedEnergyCost(Long customer_id, String format, String startTime, String endTime) {
+//        return switch (format) {
+//            case "day" -> getEnergyUsageByHour(customerId, startTime, endTime);
+//            case "month" -> getEnergyUsageByMonth(customerId, startTime, endTime);
+//            case "year" -> getEnergyUsageByYear(customerId, startTime, endTime);
+//            default -> throw new IllegalArgumentException("Invalid format");
+//        };
 
-        return new TreeMap<>();
+        return null;
     }
 
     public EnergyUsageDto getEnergyUsage(Long customerId, String format, String startTime, String endTime) {
@@ -46,11 +52,7 @@ public class EnergyUsageService {
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
 
         // Group by hour and sum the usage
-        Map<LocalDateTime, Double> hourlyUsage = logs.stream()
-                .collect(Collectors.groupingBy(
-                        log -> log.getTimestamp().withMinute(0).withSecond(0).withNano(0), // Grouping by hour
-                        Collectors.summingDouble(EnergyUsageLog::getUsageKwh)
-                ));
+        Map<LocalDateTime, Double> hourlyUsage = computeHourlyUsage(logs);
 
         // Sort the hourlyUsage map by hour
         Map<LocalDateTime, Double> sortedHourlyUsage = new TreeMap<>(hourlyUsage);
@@ -77,9 +79,7 @@ public class EnergyUsageService {
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
 
         // Group by month and sum the usage
-        Map<Integer, Double> monthlyUsage = logs.stream()
-                .collect(Collectors.groupingBy(log -> log.getTimestamp().getMonthValue(),
-                        Collectors.summingDouble(EnergyUsageLog::getUsageKwh)));
+        Map<Integer, Double> monthlyUsage = computeMonthlyUsage(logs);
 
         // Prepare total usage
         double totalUsage = monthlyUsage.values().stream().mapToDouble(Double::doubleValue).sum();
@@ -116,9 +116,7 @@ public class EnergyUsageService {
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
 
         // Group by year and sum the usage
-        Map<Integer, Double> yearlyUsage = logs.stream()
-                .collect(Collectors.groupingBy(log -> log.getTimestamp().getYear(),
-                        Collectors.summingDouble(EnergyUsageLog::getUsageKwh)));
+        Map<Integer, Double> yearlyUsage = computeYearlyUsage(logs);
 
         // Prepare total usage
         double totalUsage = yearlyUsage.values().stream().mapToDouble(Double::doubleValue).sum();
@@ -152,8 +150,25 @@ public class EnergyUsageService {
         return totalUsage * 0.21233;
     }
 
-    static class EnergyCostLogic {
-
-        //public
+    private Map<Integer, Double> computeMonthlyUsage(List<EnergyUsageLog> logs) {
+        return logs.stream()
+                .collect(Collectors.groupingBy(log -> log.getTimestamp().getMonthValue(),
+                        Collectors.summingDouble(EnergyUsageLog::getUsageKwh)));
     }
+
+    private Map<Integer, Double> computeYearlyUsage(List<EnergyUsageLog> logs) {
+        return logs.stream()
+                .collect(Collectors.groupingBy(log -> log.getTimestamp().getYear(),
+                        Collectors.summingDouble(EnergyUsageLog::getUsageKwh)));
+    }
+
+    Map<LocalDateTime, Double> computeHourlyUsage(List<EnergyUsageLog> logs) {
+        return logs.stream()
+                .collect(Collectors.groupingBy(log -> log.getTimestamp().withMinute(0).withSecond(0).withNano(0), // Grouping by hour
+                        Collectors.summingDouble(EnergyUsageLog::getUsageKwh)));
+    }
+
+    /*private EnergyConsumptionCostDto getEnergyConsumptionCostByHour(Long customerId, String startTime, String endTime) {
+
+    }*/
 }
