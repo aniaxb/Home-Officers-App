@@ -92,10 +92,10 @@ const EnergyUsageWidget: React.FC<EnergyUsageChartProps> = ({ chartData }) => {
 
     return (
         <>
-            <div className={'bg-gray-50 p-4 rounded-xl'}>
+            <div className={'border-2 border-textColor p-4 rounded-xl'}>
                 <div className={'w-full flex justify-center mb-0'}>
                     <nav aria-label="breadcrumb" className="w-max">
-                        <ol className="flex w-full flex-wrap items-center rounded-md bg-slate-50 px-4 py-2 text-bottle-green">
+                        <ol className="flex w-full flex-wrap items-center rounded-md  px-4 py-2 text-bottle-green">
                             <li onClick={() => setTimeRange('day')} className={`flex cursor-pointer items-center text-sm transition-colors duration-300 ${timeRange === 'day' ? 'text-bottle-green font-bold underline' : 'text-bottle-green-light hover:text-bottle-green-light'}`}>
                                 <a className={'text-bottle-green'}>Day</a>
                                 <span className="pointer-events-none mx-2 text-bottle-green-light">/</span>
@@ -110,7 +110,6 @@ const EnergyUsageWidget: React.FC<EnergyUsageChartProps> = ({ chartData }) => {
                         </ol>
                     </nav>
                 </div>
-
                 <Line data={data} options={options} />
             </div>
         </>
