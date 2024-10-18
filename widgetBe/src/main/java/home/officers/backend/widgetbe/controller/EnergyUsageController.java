@@ -17,9 +17,9 @@ public class EnergyUsageController {
 
     private final EnergyUsageService service;
 
-    @GetMapping(path = "/energy-costs")
-    public TreeMap<String, Double> getEnergyCosts(Customer customer) {
-        return service.computeConsumedEnergyCost(customer);
+    @GetMapping(path = "/energy-costs/{customer_id}")
+    public TreeMap<String, Double> getEnergyCosts(@PathVariable("customer_id") Long customer_id) {
+        return service.computeConsumedEnergyCost(customer_id);
     }
 
     @GetMapping(path = "/chart/{customerId}")

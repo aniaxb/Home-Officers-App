@@ -1,6 +1,5 @@
 package home.officers.backend.widgetbe.service;
 
-import home.officers.backend.widgetbe.model.domain.Customer;
 import home.officers.backend.widgetbe.model.domain.EnergyUsageLog;
 import home.officers.backend.widgetbe.model.dto.EnergyUsageDto;
 import home.officers.backend.widgetbe.repository.EnergyUsageLogRepository;
@@ -21,8 +20,8 @@ public class EnergyUsageService {
     private final EnergyUsageLogRepository repository;
     private final CustomerService customerService;
 
-    public TreeMap<String, Double> computeConsumedEnergyCost(Customer customer) {
-        List<EnergyUsageLog> energyUsageLog = repository.findByCustomerId(customer.getId())
+    public TreeMap<String, Double> computeConsumedEnergyCost(Long customer_id) {
+        List<EnergyUsageLog> energyUsageLog = repository.findByCustomerId(customer_id)
                 .orElse(new ArrayList<EnergyUsageLog>());
 
         return new TreeMap<>();
@@ -151,5 +150,10 @@ public class EnergyUsageService {
 
     private double calculateCarbonFootprint(double totalUsage) {
         return totalUsage * 0.21233;
+    }
+
+    static class EnergyCostLogic {
+
+        //public
     }
 }
