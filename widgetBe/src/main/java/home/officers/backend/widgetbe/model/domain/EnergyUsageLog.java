@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "energy_usage_log")
 public class EnergyUsageLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
