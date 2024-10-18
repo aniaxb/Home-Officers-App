@@ -6,12 +6,9 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@ToString
-@RequiredArgsConstructor
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
 @Table(name = "energy_usage_log")
 public class EnergyUsageLog {
 
@@ -28,5 +25,10 @@ public class EnergyUsageLog {
 
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp; // timestamp of the usage
+
+    @PrePersist
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
+    }
 
 }
