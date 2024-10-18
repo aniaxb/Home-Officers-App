@@ -1,40 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import EnergyUsageWidget from "./components/EnergyUsageWidget/EnergyUsageWidget.tsx";
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
+    const data = {
+        energy: "1000kWh",
+        money: "1233euro",
+        carbonFootprint: 1222,
+        chartData: {
+            // 1 Day (Today, 18-10-2024)
+            "18-10-2024 00:00:00": "75",
+            "18-10-2024 01:00:00": "60",
+            "18-10-2024 02:00:00": "50",
+            "18-10-2024 03:00:00": "45",
+            "18-10-2024 04:00:00": "55",
+            "18-10-2024 05:00:00": "70",
+            "18-10-2024 06:00:00": "85",
+            "18-10-2024 07:00:00": "90",
+            "18-10-2024 08:00:00": "100",
+            "18-10-2024 09:00:00": "110",
+            "18-10-2024 10:00:00": "120",
+            "18-10-2024 11:00:00": "130",
+            "18-10-2024 12:00:00": "80",
+            "18-10-2024 13:00:00": "90",
+            "18-10-2024 14:00:00": "100",
+            "18-10-2024 15:00:00": "130",
+            "18-10-2024 16:00:00": "140",
+            "18-10-2024 17:00:00": "150",
+            "18-10-2024 18:00:00": "160",
+            "18-10-2024 19:00:00": "170",
+            "18-10-2024 20:00:00": "180",
+            "18-10-2024 21:00:00": "190",
+            "18-10-2024 22:00:00": "200",
+            "18-10-2024 23:00:00": "210",
+
+            // 1 Month (September 2024)
+            "01-09-2024 00:00:00": "85",
+            "02-09-2024 12:00:00": "90",
+            "03-09-2024 12:00:00": "95",
+            "04-09-2024 12:00:00": "100",
+            "05-09-2024 12:00:00": "105",
+            "06-09-2024 12:00:00": "110",
+            "07-09-2024 12:00:00": "120",
+            "08-09-2024 12:00:00": "130",
+            "09-09-2024 12:00:00": "140",
+            "10-09-2024 12:00:00": "150",
+            "11-09-2024 12:00:00": "160",
+            "12-09-2024 12:00:00": "170",
+            "13-09-2024 12:00:00": "180",
+            "14-09-2024 12:00:00": "190",
+            "15-09-2024 12:00:00": "200",
+            "16-09-2024 12:00:00": "210",
+            "17-09-2024 12:00:00": "220",
+            "18-09-2024 12:00:00": "230",
+            "19-09-2024 12:00:00": "240",
+            "20-09-2024 12:00:00": "250",
+            "21-09-2024 12:00:00": "260",
+            "22-09-2024 12:00:00": "270",
+            "23-09-2024 12:00:00": "280",
+            "24-09-2024 12:00:00": "290",
+            "25-09-2024 12:00:00": "300",
+            "26-09-2024 12:00:00": "310",
+            "27-09-2024 12:00:00": "320",
+            "28-09-2024 12:00:00": "330",
+            "29-09-2024 12:00:00": "340",
+            "30-09-2024 12:00:00": "350",
+
+            // 1 Year (2024)
+            "01-01-2024 00:00:00": "75",
+            "01-02-2024 00:00:00": "80",
+            "01-03-2024 00:00:00": "85",
+            "01-04-2024 00:00:00": "90",
+            "01-05-2024 00:00:00": "95",
+            "01-06-2024 00:00:00": "100",
+            "01-07-2024 00:00:00": "105",
+            "01-08-2024 00:00:00": "110",
+            "01-09-2024 01:00:00": "115",
+            "01-10-2024 00:00:00": "120",
+            "01-11-2024 00:00:00": "125",
+            "01-12-2024 00:00:00": "2000"
+        }
+    };
+
+    return (
     <>
-        <button
-            type="button"
-            data-ripple-light="true"
-            className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-600 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-        >
-            Button
-        </button>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+        <div>
+            <h1 className={'mb-4'}>Energy Usage</h1>
+            <EnergyUsageWidget chartData={data.chartData} />
+        </div>
     </>
   )
 }

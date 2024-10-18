@@ -8,6 +8,10 @@ export default withMT({
   ],
   theme: {
     extend: {},
+    colors: {
+      "bottle-green": "#1e454d",
+        "bottle-green-light": "#2b6a75",
+    }
   },
   plugins: [],
 });
