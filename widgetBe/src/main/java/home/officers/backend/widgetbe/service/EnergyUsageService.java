@@ -19,18 +19,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EnergyUsageService {
 
+    private static final String DAY = "day";
+    private static final String MONTH = "month";
+    private static final String YEAR = "year";
+    private static final String INVALID_FORMAT = "Invalid format";
+    private final double polishAverageKWhPrice = 0.55; //[PLN]
     private final EnergyUsageLogRepository repository;
     private final CustomerService customerService;
 
-    public EnergyConsumptionCostDto computeConsumedEnergyCost(Long customer_id, String format, String startTime, String endTime) {
-//        return switch (format) {
-//            case "day" -> getEnergyUsageByHour(customerId, startTime, endTime);
-//            case "month" -> getEnergyUsageByMonth(customerId, startTime, endTime);
-//            case "year" -> getEnergyUsageByYear(customerId, startTime, endTime);
-//            default -> throw new IllegalArgumentException("Invalid format");
-//        };
-
-        return null;
+    public EnergyConsumptionCostDto computeConsumedEnergyCost(Long customerId, String format, String startTime, String endTime) {
+        return switch (format) {
+            case "day" -> getEnergyConsumptionCostByHour(customerId, startTime, endTime);
+            case "month" -> getEnergyConsumptionCostByMonth(customerId, startTime, endTime);
+            case "year" -> getEnergyConsumptionCostByYear(customerId, startTime, endTime);
+            default -> throw new IllegalArgumentException(INVALID_FORMAT);
+        };
     }
 
     public EnergyUsageDto getEnergyUsage(Long customerId, String format, String startTime, String endTime) {
@@ -38,15 +41,14 @@ public class EnergyUsageService {
             case "day" -> getEnergyUsageByHour(customerId, startTime, endTime);
             case "month" -> getEnergyUsageByMonth(customerId, startTime, endTime);
             case "year" -> getEnergyUsageByYear(customerId, startTime, endTime);
-            default -> throw new IllegalArgumentException("Invalid format");
+            default -> throw new IllegalArgumentException(INVALID_FORMAT);
         };
     }
 
     private EnergyUsageDto getEnergyUsageByHour(Long customerId, String startTime, String endTime) {
         // Parse start and end time using a custom pattern that matches the input format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime start = LocalDateTime.parse(startTime, formatter);
-        LocalDateTime end = LocalDateTime.parse(endTime, formatter);
+        LocalDateTime start = convertStringToDataFormat(startTime);
+        LocalDateTime end = convertStringToDataFormat(endTime);
 
         // Fetch logs for the customer within the specified time range
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
@@ -58,7 +60,7 @@ public class EnergyUsageService {
         Map<LocalDateTime, Double> sortedHourlyUsage = new TreeMap<>(hourlyUsage);
 
         // Prepare total usage and chart data
-        double totalUsage = sortedHourlyUsage.values().stream().mapToDouble(Double::doubleValue).sum();
+        double totalUsage = sumDataFromHourChartMap(sortedHourlyUsage);
 
         // Prepare the chart data as a sorted map
         Map<String, Double> chartData = new LinkedHashMap<>();
@@ -73,8 +75,8 @@ public class EnergyUsageService {
     }
 
     private EnergyUsageDto getEnergyUsageByMonth(Long customerId, String startTime, String endTime) {
-        LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-        LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        LocalDateTime start = convertStringToDataFormat(startTime);
+        LocalDateTime end = convertStringToDataFormat(endTime);
 
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
 
@@ -82,7 +84,7 @@ public class EnergyUsageService {
         Map<Integer, Double> monthlyUsage = computeMonthlyUsage(logs);
 
         // Prepare total usage
-        double totalUsage = monthlyUsage.values().stream().mapToDouble(Double::doubleValue).sum();
+        double totalUsage = sumDataFromMonYearChartMap(monthlyUsage);
 
         // Sort the monthly usage by month (1-12)
         Map<Integer, Double> sortedMonthlyUsage = monthlyUsage.entrySet().stream()
@@ -110,8 +112,8 @@ public class EnergyUsageService {
 
 
     private EnergyUsageDto getEnergyUsageByYear(Long customerId, String startTime, String endTime) {
-        LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-        LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        LocalDateTime start = convertStringToDataFormat(startTime);
+        LocalDateTime end = convertStringToDataFormat(endTime);
 
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
 
@@ -119,7 +121,7 @@ public class EnergyUsageService {
         Map<Integer, Double> yearlyUsage = computeYearlyUsage(logs);
 
         // Prepare total usage
-        double totalUsage = yearlyUsage.values().stream().mapToDouble(Double::doubleValue).sum();
+        double totalUsage = sumDataFromMonYearChartMap(yearlyUsage);
 
         // Sort the yearly usage by year (key)
         Map<Integer, Double> sortedYearlyUsage = yearlyUsage.entrySet().stream()
@@ -168,7 +170,66 @@ public class EnergyUsageService {
                         Collectors.summingDouble(EnergyUsageLog::getUsageKwh)));
     }
 
-    /*private EnergyConsumptionCostDto getEnergyConsumptionCostByHour(Long customerId, String startTime, String endTime) {
+    private Double sumDataFromMonYearChartMap(Map<Integer, Double> chartDataMap) {
+        return chartDataMap.values().stream().mapToDouble(Double::doubleValue).sum();
+    }
 
-    }*/
+    private Double sumDataFromHourChartMap(Map<LocalDateTime, Double> chartDataMap) {
+        return chartDataMap.values().stream().mapToDouble(Double::doubleValue).sum();
+    }
+
+    private LocalDateTime convertStringToDataFormat(String date) {
+        return LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+    }
+
+    private EnergyConsumptionCostDto getEnergyConsumptionCostByHour(Long customerId, String startTime, String endTime) {
+        LocalDateTime start = convertStringToDataFormat(startTime);
+        LocalDateTime end = convertStringToDataFormat(endTime);
+
+        List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
+
+        Map<LocalDateTime, Double> hourlyUsage = computeHourlyUsage(logs);
+
+        double sumOfConsumedEnergy = sumDataFromHourChartMap(hourlyUsage);
+        double totalEnergyConsumptionCost = sumOfConsumedEnergy * polishAverageKWhPrice;
+
+        Customer customer = customerService.getCustomer(customerId);
+
+        return new EnergyConsumptionCostDto(Mapper.toCustomerDto(customer), sumOfConsumedEnergy,
+                totalEnergyConsumptionCost);
+    }
+
+    private EnergyConsumptionCostDto getEnergyConsumptionCostByMonth(Long customerId, String startTime, String endTime) {
+        LocalDateTime start = convertStringToDataFormat(startTime);
+        LocalDateTime end = convertStringToDataFormat(endTime);
+
+        List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
+
+        Map<Integer, Double> monthlyUsage = computeMonthlyUsage(logs);
+
+        double sumOfConsumedEnergy = sumDataFromMonYearChartMap(monthlyUsage);
+        double totalEnergyConsumptionCost = sumOfConsumedEnergy * polishAverageKWhPrice;
+
+        Customer customer = customerService.getCustomer(customerId);
+
+        return new EnergyConsumptionCostDto(Mapper.toCustomerDto(customer), sumOfConsumedEnergy,
+                totalEnergyConsumptionCost);
+    }
+
+    private EnergyConsumptionCostDto getEnergyConsumptionCostByYear(Long customerId, String startTime, String endTime) {
+        LocalDateTime start = convertStringToDataFormat(startTime);
+        LocalDateTime end = convertStringToDataFormat(endTime);
+
+        List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
+
+        Map<Integer, Double> yearlyUsage = computeYearlyUsage(logs);
+
+        double sumOfConsumedEnergy = sumDataFromMonYearChartMap(yearlyUsage);
+        double totalEnergyConsumptionCost = sumOfConsumedEnergy * polishAverageKWhPrice;
+
+        Customer customer = customerService.getCustomer(customerId);
+
+        return new EnergyConsumptionCostDto(Mapper.toCustomerDto(customer), sumOfConsumedEnergy,
+                totalEnergyConsumptionCost);
+    }
 }
