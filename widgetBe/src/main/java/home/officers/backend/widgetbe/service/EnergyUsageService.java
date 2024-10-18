@@ -40,9 +40,10 @@ public class EnergyUsageService {
     }
 
     private EnergyUsageDto getEnergyUsageByDay(Long customerId, String startTime, String endTime) {
-        // Parse start and end time
-        LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        // Parse start and end time using a custom pattern that matches the input format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime start = LocalDateTime.parse(startTime, formatter);
+        LocalDateTime end = LocalDateTime.parse(endTime, formatter);
 
         List<EnergyUsageLog> logs = repository.findByCustomerIdAndTimestampBetween(customerId, start, end);
 
