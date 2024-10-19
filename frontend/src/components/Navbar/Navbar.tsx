@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {useTheme} from "../../context/ThemeContext.tsx";
+import { FaCloudMoon } from "react-icons/fa6";
+import {Typography} from "@material-tailwind/react";
 
 function Navbar() {
     const { switchTheme } = useTheme();
@@ -9,10 +11,15 @@ function Navbar() {
         setIsDark(event.target.checked);
     };
     return (
-        <div className={'bg-bottle-green p-4 w-full flex justify-around items-center'}>
-            <h1 className="text-yellowBank">Customers</h1>
+        <div className={'bg-cb-blue p-4 w-full flex justify-between items-center'}>
+            <div className={'flex justify-around gap-2 items-center'}>
+                <Typography color="gray" className={'text-cb-yellow text-xl my-2'}>EN</Typography>
+                <Typography color="gray" className={'text-cb-yellow text-xl my-2'}>|</Typography>
+                <Typography color="gray" className={'text-cb-yellow text-xl my-2'}>DE</Typography>
+            </div>
+            {/*<Typography className="text-cb-yellow text-xl">Customers</Typography>*/}
             <div className="flex items-center justify-center">
-                <div className={'text-yellowBank mr-4 text-xl'}>Theme</div>
+                <div className={'text-cb-yellow mr-4 text-xl flex justify-center gap-2 items-center'}><FaCloudMoon/>Dark Theme</div>
                 <label className="relative inline-flex items-center cursor-pointer">
                     <input
                         type="checkbox"

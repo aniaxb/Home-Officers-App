@@ -74,14 +74,13 @@ h1 {
 
 .light {
   --bgColor: #F2F2F2;
-  --textColor: #1E454D;
+  --textColor: #002E3C;
   --yellowBank: #ffd700;
-  --borderColor: #1E454D;
+  --borderColor: #002E3C;
 }
 .dark {
-  /*--bgColor: #262626;*/
-  --bgColor: #222222;
-  --bgColor2: #112023;
+  --bgColor: #262626;
+  --bgColor2: #002E3C;
   --textColor: #F4F4F6;
   --textColor2: #A2AEBB;
   --borderColor: #F4F4F6;

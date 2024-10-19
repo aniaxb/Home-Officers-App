@@ -9,8 +9,9 @@ export default withMT({
   theme: {
     extend: {},
     colors: {
-      "bottle-green": "#1e454d",
-      "bottle-green-light": "#2b6a75",
+      "cb-blue": "#002E3C",
+      "bottle-green": "#002E3C",
+      "bottle-green-light": "#1d5b6e",
       "cb-yellow": "#ffd700",
       bgColor: 'var(--bgColor)',
       bgColor2: 'var(--bgColor2)',
