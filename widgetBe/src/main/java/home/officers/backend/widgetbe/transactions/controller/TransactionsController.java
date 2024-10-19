@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
-@CrossOrigin
 @RequestMapping(path = "/api/v1/transactions")
 public class TransactionsController {
 
      private final TransactionsService service;
 
-    @GetMapping(path = "/analyze/{coustomerId}")
+    @GetMapping(path = "/analyze/{customerId}")
     public TransactionsResponseDto getTransactionDataForCustomers(
-            @PathVariable Long coustomerId) {
-        return service.getTransactionDataForCustomers(coustomerId);
+            @PathVariable Long customerId) {
+        return service.getTransactionDataForCustomers(customerId);
     }
 }
