@@ -29,7 +29,6 @@ public class TransactionsService {
     private TransactionsResponseDto computeDataForCustomer(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_CUSTOMER));
-
         List<Transaction> transactionsList = transactionRepository.findAllByCustomerID(customerId)
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_TRANSACTIONS.formatted(customerId)));
 
