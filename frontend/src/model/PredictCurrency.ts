@@ -1,6 +1,14 @@
 export type PredictCurrency = {
-    real: {
-        x: string[];
-        y: number[];
+    actual: {
+        dates: string[];
+        values: number[];
+    },
+    predicted: {
+        dates: string[];
+        values: number[];
+    },
+    future: {
+        dates: string[];
+        values: number[];
     }
 }
