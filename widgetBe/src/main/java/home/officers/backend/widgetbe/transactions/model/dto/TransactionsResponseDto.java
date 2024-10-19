@@ -6,6 +6,6 @@ public record TransactionsResponseDto(
         CustomerDto customer,
         int cashTransactions,
         int onlineTransactions,
-        long carbonFootprint
+        double carbonFootprint
 ) {
 }
