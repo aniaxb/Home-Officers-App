@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static home.officers.backend.widgetbe.commonConsts.CommonConsts.NOT_FOUND_CUSTOMER;
 
@@ -21,7 +20,6 @@ public class VisitDurationService {
     private final VisitRepository visitRepository;
     private final CustomerRepository customerRepository;
     private static final String NO_VISIT_MSG = "There is no any visits on site for customer id: %s";
-    private List<Long> customerIds = List.of(1L, 2L, 3L);
 
     public CustomerVisitsAnalysis getCustomerVisitsAnalysis(Long customerId) {
         return analyzeCustomerVisits(customerId);
@@ -34,8 +32,8 @@ public class VisitDurationService {
 
         int lastVisitDuration = findLastVisitDuration(visitsToAnalyze);
         int averageDurationTime = computeAverageDurationTime(visitsToAnalyze);
-        double visitDurationTrend = computeDurationTrend(visitsToAnalyze, averageDurationTime);
-        double otherComp = anotherCustomerDurationComparingTrend(customerId, averageDurationTime);
+        int visitDurationTrend = computeDurationTrend(visitsToAnalyze, averageDurationTime);
+        int otherComp = anotherCustomerDurationComparingTrend(averageDurationTime);
 
 
         return new CustomerVisitsAnalysis(Mapper.toCustomerDto(customer), otherComp,
@@ -44,11 +42,17 @@ public class VisitDurationService {
                 visitDurationTrend);
     }
 
-    private double computeDurationTrend(List<Visit> visitsList, int lastVisitDuration) {
+    private int computeDurationTrend(List<Visit> visitsList, int lastVisitDuration) {
 
         int averageDurationTimeFrom20LastVisits = computeAverageDurationTime(take20LatsVisits(visitsList));
-
-        return (double) averageDurationTimeFrom20LastVisits / lastVisitDuration * 100;
+        double outcomeTrend = (double) lastVisitDuration / averageDurationTimeFrom20LastVisits;
+        if (outcomeTrend < 1) {
+            double percentageOutcome = (outcomeTrend * 100);
+            return (int) -percentageOutcome;
+        } else {
+            double percentageOutcome = (1 - outcomeTrend) * 100;
+            return (int) percentageOutcome;
+        }
     }
 
     private int computeAverageDurationTime(List<Visit> visitsList) {
@@ -66,20 +70,21 @@ public class VisitDurationService {
         return lastVisit.getVisitDuration();
     }
 
-    private int anotherCustomerDurationComparingTrend(Long currentCustomerId, int averageDurationTime) {
+    private int anotherCustomerDurationComparingTrend(int averageDurationTime) {
         List<Customer> customers = customerRepository.findAll();
-        Map<Long, List<Visit>> custmersVisitsToCompare = new HashMap<>();
+        Map<Long, List<Visit>> customersVisitsToCompare = new HashMap<>();
         customers.forEach(customer -> {
             Long currentCustomersId = customer.getId();
-            custmersVisitsToCompare.put(currentCustomersId, visitRepository.findAllByCustomerId(currentCustomersId).get());
+            customersVisitsToCompare.put(currentCustomersId, visitRepository.findAllByCustomerId(currentCustomersId).get());
         });
 
-        int averageOtherCustomersVisitDuration = (int) custmersVisitsToCompare.values()
+        int averageOtherCustomersVisitDuration = (int) customersVisitsToCompare.values()
                 .stream()
-                .filter(x -> computeAverageDurationTime(x) <= averageDurationTime)
+                .filter(x -> computeAverageDurationTime(x) > averageDurationTime)
                 .count();
+        double trendOutcome = (double) averageOtherCustomersVisitDuration / customers.size() * 100;
 
-        return averageOtherCustomersVisitDuration / customers.size() * 100;
+        return (int) trendOutcome;
     }
 
     private List<Visit> take20LatsVisits(List<Visit> visitsList) {
