@@ -21,28 +21,34 @@ public class BalanceService {
     public BalanceDataDto getBalances(Long customerId) {
         List<Account> accounts = repository.findAccountsByCustomerId(customerId);
 
-        double totalBalance = accounts.stream()
-                .mapToDouble(Account::getBalance)
+        double totalBalanceInEuro = accounts.stream()
+                .mapToDouble(account -> {
+                    double rateToEuro = adapter.getConvertedCurrency("eur").eur().getOrDefault(account.getCurrency().getCurrency(), 1.0);
+                    return account.getBalance() / rateToEuro;
+                })
                 .sum();
+
         CurrencyDto currency = adapter.getConvertedCurrency("eur");
 
         List<AccountDto> accountDtos = accounts.stream()
                 .map(account -> {
                     double rateToEuro = currency.eur().getOrDefault(account.getCurrency().getCurrency(), 1.0);
+                    double realValueInEur = account.getBalance() / rateToEuro;
 
-                    double realValueInEuro = account.getBalance() * rateToEuro;
-                    double percent = (account.getBalance() / totalBalance) * 100;
+                    double percent = totalBalanceInEuro > 0
+                            ? (realValueInEur / totalBalanceInEuro) * 100
+                            : 0;
 
-                    // Create and return AccountDto
                     return new AccountDto(
                             account.getAccountNumber(),
                             account.getCurrency().toString(),
                             account.getBalance(),
+                            realValueInEur,
                             percent
                     );
                 })
                 .toList();
 
-        return new BalanceDataDto(accountDtos, totalBalance);
+        return new BalanceDataDto(accountDtos, totalBalanceInEuro);
     }
 }
