@@ -1,11 +1,11 @@
 package home.officers.backend.widgetbe.transactions.service;
 
-import home.officers.backend.widgetbe.model.domain.Customer;
-import home.officers.backend.widgetbe.repository.CustomerRepository;
+import home.officers.backend.widgetbe.customer.model.domain.Customer;
+import home.officers.backend.widgetbe.customer.repository.CustomerRepository;
+import home.officers.backend.widgetbe.customer.util.Mapper;
 import home.officers.backend.widgetbe.transactions.model.domain.Transaction;
 import home.officers.backend.widgetbe.transactions.model.dto.TransactionsResponseDto;
 import home.officers.backend.widgetbe.transactions.repository.TransactionRepository;
-import home.officers.backend.widgetbe.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
