@@ -45,7 +45,7 @@ function TransactionsWidget() {
                                         <Typography
                                             variant="small"
                                             color="gray"
-                                            className="font-normal bg-bgColor"
+                                            className="font-normal bg-bottle-green"
                                         >
                                             {t('tooltipContent')}
                                         </Typography>

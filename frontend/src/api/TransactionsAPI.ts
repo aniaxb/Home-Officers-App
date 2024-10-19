@@ -4,8 +4,8 @@ import {Transactions} from "../model/Transactions.ts";
 
 export class TransactionsAPI {
 
-    static getTransactionsData(customerId: string): Promise<TimeSpent> {
-        return axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/transactions/${customerId}`)
+    static getTransactionsData(customerId: number): Promise<TimeSpent> {
+        return axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/transactions/analyze/${customerId}`)
             .then((response) => response.data);
     }
 
