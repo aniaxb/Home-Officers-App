@@ -617,7 +617,7 @@ VALUES
     (1, 'CASH', 854.68, 'EUR', '2024-09-01 03:22:22'),
     (1, 'CASH', 707.74, 'EUR', '2024-09-02 09:16:29');
 
-INSERT INTO Visit (customer_id, visit_date, visit_duration)
+INSERT INTO visit (customer_id, visit_date, visit_duration)
 VALUES
     (1, '2024-10-29 18:06:00', 43),
     (1, '2024-10-19 10:33:00', 74),
