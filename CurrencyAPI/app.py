@@ -61,8 +61,8 @@ def predict_future(model, data, seq_length, future_steps, scaler):
     return future_predictions
 
 
-@app.route('/predict', methods=['GET'])
-def predict():
+@app.route('/predict/<int:time>', methods=['GET'])
+def predict(time):
     model_path = 'currency_model.h5'
     data_path = 'ecb_exchange_rates.csv'
 
@@ -96,13 +96,11 @@ def predict():
     actual_dates = date_index[-len(y_test):].tolist()  # Actual dates
     predicted_dates = actual_dates[len(actual_dates) - len(predictions):]  # Adjusted predicted dates
 
-    # Predict future values (next 5 years)
-    future_days = 200
-    future_predictions = predict_future(model, scaled_data, sequence_length, future_days, scaler)
+    future_predictions = predict_future(model, scaled_data, sequence_length, time, scaler)
 
     # Create future date range
     last_date = actual_dates[-1]
-    future_dates = pd.date_range(last_date, periods=future_days + 1, freq='D')[1:]
+    future_dates = pd.date_range(last_date, periods=time + 1, freq='D')[1:]
 
     # Prepare response data
     actual = scaler.inverse_transform([y_test]).flatten().tolist()

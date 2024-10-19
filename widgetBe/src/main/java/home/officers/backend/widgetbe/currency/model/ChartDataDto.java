@@ -1,5 +1,9 @@
 package home.officers.backend.widgetbe.currency.model;
 
-public class ChartDataDto {
+public record ChartDataDto(
+        DataDto actual,
+        DataDto future,
+        DataDto predicted
+) {
 
 }
