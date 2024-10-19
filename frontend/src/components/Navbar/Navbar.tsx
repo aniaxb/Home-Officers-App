@@ -2,24 +2,40 @@ import React, {useState} from 'react';
 import {useTheme} from "../../context/ThemeContext.tsx";
 import { FaCloudMoon } from "react-icons/fa6";
 import {Typography} from "@material-tailwind/react";
+import {useTranslation} from "react-i18next";
 
 function Navbar() {
     const { switchTheme } = useTheme();
     const [isDark, setIsDark] = useState(false);
+    const [isEnglish, setIsEnglish] = useState(true);
+    const { t} = useTranslation();
+
     const handleToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
         switchTheme(event.target.checked ? 'dark' : 'light');
         setIsDark(event.target.checked);
     };
+
+    const { i18n } = useTranslation();
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
+
     return (
         <div className={'bg-cb-blue p-4 w-full flex justify-between items-center'}>
             <div className={'flex justify-around gap-2 items-center'}>
-                <Typography color="gray" className={'text-cb-yellow text-xl my-2'}>EN</Typography>
+                <Typography onClick={() => {
+                    changeLanguage('en')
+                    setIsEnglish(true);
+                }} color="gray" className={`${isEnglish ? 'font-bold underline' : ''} hover:cursor-pointer text-cb-yellow text-xl my-2`}>EN</Typography>
                 <Typography color="gray" className={'text-cb-yellow text-xl my-2'}>|</Typography>
-                <Typography color="gray" className={'text-cb-yellow text-xl my-2'}>DE</Typography>
+                <Typography onClick={() => {
+                    changeLanguage('de')
+                    setIsEnglish(false);
+                }} color="gray" className={`${isEnglish ? 'font-medium no-underline' : 'font-bold underline'} hover:cursor-pointer text-cb-yellow text-xl my-2`}>DE</Typography>
             </div>
-            {/*<Typography className="text-cb-yellow text-xl">Customers</Typography>*/}
             <div className="flex items-center justify-center">
-                <div className={'text-cb-yellow mr-4 text-xl flex justify-center gap-2 items-center'}><FaCloudMoon/>Dark Theme</div>
+                <div className={'text-cb-yellow mr-4 text-xl flex justify-center gap-2 items-center'}><FaCloudMoon/>{t('darkTheme')}</div>
                 <label className="relative inline-flex items-center cursor-pointer">
                     <input
                         type="checkbox"

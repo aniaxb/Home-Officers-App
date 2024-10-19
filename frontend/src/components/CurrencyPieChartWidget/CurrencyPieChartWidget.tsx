@@ -8,12 +8,14 @@ import {
     Legend
 } from 'chart.js';
 import { CurrencyBalanceAPI } from "../../api/CurrencyBalanceAPI.ts";
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function CurrencyPieChartWidget() {
-    const [chartData, setChartData] = useState<any>(null); // State to hold chart data
+    const [chartData, setChartData] = useState<any>(null);
     const chartRef = useRef(null);
+    const { t} = useTranslation();
 
     useEffect(() => {
         async function fetchCurrencyBalance() {
@@ -21,32 +23,38 @@ function CurrencyPieChartWidget() {
 
             // Prepare the data for the chart
             const data = {
-                labels: dataset.map(item => item.currency), // Labels for the pie chart (e.g., 'USD', 'EUR')
+                labels: dataset.map(item => item.currency),
                 datasets: [{
-                    data: dataset.map(item => item.amount), // Data (amounts for each currency)
+                    data: dataset.map(item => item.amount),
                     backgroundColor: ['#002E3C', '#1d5b6e', '#ffd700'], // Colors corresponding to each currency
                 }]
             };
 
-            setChartData(data); // Set the chart data state
+            setChartData(data);
         }
 
         fetchCurrencyBalance();
     }, []);
 
+    const options = {
+        responsive: true,
+        // maintainAspectRatio: false,
+    }
+
     return (
-        <div className={'border-2 border-textColor p-4 rounded-xl'}>
-            <Typography className={'text-2xl font-bold my-2 text-textColor'}>Account Balance</Typography>
+        <div className={' p-4 rounded-xl'}>
+            <Typography className={'text-3xl font-bold my-2 text-textColor'}>{t('accountBalance')}</Typography>
             <div className={'w-full flex items-center justify-center mb-0'}>
-                <div className={'w-2/3 flex justify-center items-center'}>
+                {/*<div className={'w-2/3 flex justify-center items-center'}>*/}
+                <div className={'w-full max-h-[26rem] flex justify-center items-center overflow-hidden'}>
                     {chartData ? (
-                        <Doughnut data={chartData} ref={chartRef} />
+                        <Doughnut data={chartData} ref={chartRef} options={options} />
                     ) : (
                         <p>Loading...</p>
                     )}
                 </div>
             </div>
-            <Typography className={'text-xl mt-2'}>Total balance in Euro: 750 EUR</Typography>
+            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: 750 EUR</Typography>
         </div>
     );
 }
