@@ -1,4 +1,4 @@
-package home.officers.backend.widgetbe.model.domain;
+package home.officers.backend.widgetbe.customer.model.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

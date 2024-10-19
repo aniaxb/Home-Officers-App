@@ -1,4 +1,4 @@
-package home.officers.backend.widgetbe.model.dto;
+package home.officers.backend.widgetbe.customer.model.dto;
 
 
 public record CustomerDto(
