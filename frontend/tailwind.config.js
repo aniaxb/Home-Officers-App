@@ -10,7 +10,13 @@ export default withMT({
     extend: {},
     colors: {
       "bottle-green": "#1e454d",
-        "bottle-green-light": "#2b6a75",
+      "bottle-green-light": "#2b6a75",
+      "cb-yellow": "#ffd700",
+      bgColor: 'var(--bgColor)',
+      bgColor2: 'var(--bgColor2)',
+      textColor: 'var(--textColor)',
+      textColor2: 'var(--textColor2)',
+      yellowBank: 'var(--yellowBank)',
     }
   },
   plugins: [],

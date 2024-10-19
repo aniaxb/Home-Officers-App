@@ -1,5 +1,10 @@
 import './App.css'
 import EnergyUsageWidget from "./components/EnergyUsageWidget/EnergyUsageWidget.tsx";
+import FutureTrendWidget from "./components/FutureTrendWidget/FutureTrendWidget.tsx";
+import TopPercentageUsageWidget from "./components/TopPercentageUsageWidget/TopPercentageUsageWidget.tsx";
+import UsageToMoneyConversionWidget from "./components/UsageToMoneyConversionWidget/UsageToMoneyConversionWidget.tsx";
+import Navbar from "./components/Navbar/Navbar.tsx";
+import {ThemeProvider} from "./context/ThemeContext.tsx";
 
 function App() {
 
@@ -83,12 +88,31 @@ function App() {
     };
 
     return (
+        <ThemeProvider>
     <>
-        <div>
-            <h1 className={'mb-4'}>Energy Usage</h1>
-            <EnergyUsageWidget chartData={data.chartData} />
+        <div className={'w-full bg-bgColor text-textColor'}>
+            <Navbar/>
+            <div className={'grid grid-cols-2 p-16'}>
+                <div className={'m-4'}>
+                    <h1 className={'mb-2'}> Usage</h1>
+                    <EnergyUsageWidget chartData={data.chartData} />
+                </div>
+                <div className={'m-4'}>
+                    <h1 className={'mb-2'}>Future Trend</h1>
+                    <FutureTrendWidget/>
+                </div>
+                <div className={'m-4'}>
+                    <h1 className={'mb-2'}>Top Percentage Usage</h1>
+                    <TopPercentageUsageWidget/>
+                </div>
+                <div className={'m-4'}>
+                    <h1 className={'mb-2'}>Usage to money conversion</h1>
+                    <UsageToMoneyConversionWidget/>
+                </div>
+            </div>
         </div>
     </>
+        </ThemeProvider>
   )
 }
 
