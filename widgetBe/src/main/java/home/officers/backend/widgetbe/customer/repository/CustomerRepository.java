@@ -1,6 +1,6 @@
-package home.officers.backend.widgetbe.repository;
+package home.officers.backend.widgetbe.customer.repository;
 
-import home.officers.backend.widgetbe.model.domain.Customer;
+import home.officers.backend.widgetbe.customer.model.domain.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
