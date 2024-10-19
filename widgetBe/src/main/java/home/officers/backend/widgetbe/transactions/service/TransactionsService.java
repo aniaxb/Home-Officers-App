@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static home.officers.backend.widgetbe.commonConsts.CommonConsts.NOT_FOUND_CUSTOMER;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionsService {
 
     private final CustomerRepository customerRepository;
     private final TransactionRepository transactionRepository;
-    private static final String NOT_FOUND_CUSTOMER = "Customer not found";
     private static final String NOT_FOUND_TRANSACTIONS = "Transactions not Found for customer Id: %s";
     private final double carbonFootprintPerBanknote = 0.005;
 
