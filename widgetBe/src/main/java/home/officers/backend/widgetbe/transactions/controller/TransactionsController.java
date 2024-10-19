@@ -3,14 +3,12 @@ package home.officers.backend.widgetbe.transactions.controller;
 import home.officers.backend.widgetbe.transactions.model.dto.TransactionsResponseDto;
 import home.officers.backend.widgetbe.transactions.service.TransactionsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/transactions")
+@CrossOrigin
+@RequestMapping(path = "/api/v1/transactions")
 public class TransactionsController {
 
      private final TransactionsService service;
