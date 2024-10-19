@@ -4,9 +4,9 @@ import home.officers.backend.widgetbe.customer.model.dto.CustomerDto;
 
 public record CustomerVisitsAnalysis(
         CustomerDto customer,
-        int averageCustomersTimeInComparison, //[%]
+        double averageCustomersTimeInComparison, //[%]
         int customerAverageTime, //[s]
         int lastVisitDuration,
-        int visitTrend //[%] with sign -
+        double visitTrend //[%] with sign -
 ) {
 }
