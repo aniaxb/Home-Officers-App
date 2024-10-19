@@ -1,8 +1,8 @@
 import './App.css'
-import EnergyUsageWidget from "./components/EnergyUsageWidget/EnergyUsageWidget.tsx";
-import FutureTrendWidget from "./components/FutureTrendWidget/FutureTrendWidget.tsx";
-import TopPercentageUsageWidget from "./components/TopPercentageUsageWidget/TopPercentageUsageWidget.tsx";
-import UsageToMoneyConversionWidget from "./components/UsageToMoneyConversionWidget/UsageToMoneyConversionWidget.tsx";
+import PredictCurrencyChartWidget from "./components/PredictCurrencyChartWidget/PredictCurrencyChartWidget.tsx";
+import CurrencyPieChartWidget from "./components/CurrencyPieChartWidget/CurrencyPieChartWidget.tsx";
+import TransactionsWidget from "./components/TransactionsWidget/TransactionsWidget.tsx";
+import TimeSpentWidget from "./components/TimeSpentWidget/TimeSpentWidget.tsx";
 import Navbar from "./components/Navbar/Navbar.tsx";
 import {ThemeProvider} from "./context/ThemeContext.tsx";
 
@@ -15,12 +15,12 @@ function App() {
         chartData: {
             // 1 Day (Today, 18-10-2024)
             "18-10-2024 00:00:00": "75",
-            "18-10-2024 01:00:00": "60",
-            "18-10-2024 02:00:00": "50",
-            "18-10-2024 03:00:00": "45",
+            "18-10-2024 01:00:00": "20",
+            "18-10-2024 02:00:00": "40",
+            "18-10-2024 03:00:00": "35",
             "18-10-2024 04:00:00": "55",
-            "18-10-2024 05:00:00": "70",
-            "18-10-2024 06:00:00": "85",
+            "18-10-2024 05:00:00": "30",
+            "18-10-2024 06:00:00": "75",
             "18-10-2024 07:00:00": "90",
             "18-10-2024 08:00:00": "100",
             "18-10-2024 09:00:00": "110",
@@ -41,14 +41,14 @@ function App() {
 
             // 1 Month (September 2024)
             "01-09-2024 00:00:00": "85",
-            "02-09-2024 12:00:00": "90",
-            "03-09-2024 12:00:00": "95",
-            "04-09-2024 12:00:00": "100",
-            "05-09-2024 12:00:00": "105",
-            "06-09-2024 12:00:00": "110",
-            "07-09-2024 12:00:00": "120",
-            "08-09-2024 12:00:00": "130",
-            "09-09-2024 12:00:00": "140",
+            "02-09-2024 12:00:00": "50",
+            "03-09-2024 12:00:00": "75",
+            "04-09-2024 12:00:00": "40",
+            "05-09-2024 12:00:00": "65",
+            "06-09-2024 12:00:00": "35",
+            "07-09-2024 12:00:00": "80",
+            "08-09-2024 12:00:00": "30",
+            "09-09-2024 12:00:00": "50",
             "10-09-2024 12:00:00": "150",
             "11-09-2024 12:00:00": "160",
             "12-09-2024 12:00:00": "170",
@@ -83,31 +83,27 @@ function App() {
             "01-09-2024 01:00:00": "115",
             "01-10-2024 00:00:00": "120",
             "01-11-2024 00:00:00": "125",
-            "01-12-2024 00:00:00": "2000"
+            "01-12-2024 00:00:00": "300"
         }
     };
 
     return (
         <ThemeProvider>
     <>
-        <div className={'w-full bg-bgColor text-textColor'}>
+        <div className={'w-full h-screen bg-bgColor text-textColor'}>
             <Navbar/>
             <div className={'grid grid-cols-2 p-16'}>
                 <div className={'m-4'}>
-                    <h1 className={'mb-2'}> Usage</h1>
-                    <EnergyUsageWidget chartData={data.chartData} />
+                    <CurrencyPieChartWidget/>
                 </div>
                 <div className={'m-4'}>
-                    <h1 className={'mb-2'}>Future Trend</h1>
-                    <FutureTrendWidget/>
+                    <PredictCurrencyChartWidget chartData={data.chartData} />
                 </div>
                 <div className={'m-4'}>
-                    <h1 className={'mb-2'}>Top Percentage Usage</h1>
-                    <TopPercentageUsageWidget/>
+                    <TransactionsWidget/>
                 </div>
                 <div className={'m-4'}>
-                    <h1 className={'mb-2'}>Usage to money conversion</h1>
-                    <UsageToMoneyConversionWidget/>
+                    <TimeSpentWidget/>
                 </div>
             </div>
         </div>
