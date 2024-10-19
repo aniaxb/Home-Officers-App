@@ -9,9 +9,10 @@ import {
     Title,
     Tooltip,
     Legend,
-    ChartDataset
+    ChartDataset, ChartOptions
 } from 'chart.js';
 import dayjs from 'dayjs';
+import {Typography} from "@material-tailwind/react";
 
 // Register the components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -20,11 +21,11 @@ interface ChartDataProps {
     [key: string]: string;
 }
 
-interface EnergyUsageChartProps {
+interface PredictCurrencyChartProps {
     chartData: ChartDataProps;
 }
 
-const EnergyUsageWidget: React.FC<EnergyUsageChartProps> = ({ chartData }) => {
+const PredictCurrencyChartWidget: React.FC<PredictCurrencyChartProps> = ({ chartData }) => {
     const [timeRange, setTimeRange] = useState<'year' | 'month' | 'day'>('month');
 
     const filterDataByTimeRange = () => {
@@ -61,22 +62,29 @@ const EnergyUsageWidget: React.FC<EnergyUsageChartProps> = ({ chartData }) => {
 
     const { labels, values } = filterDataByTimeRange();
 
+    const rootStyles = getComputedStyle(document.documentElement);
+    const bgColor = rootStyles.getPropertyValue('--bgColor').trim();
+    const borderColor = rootStyles.getPropertyValue('--borderColor').trim();
+
     const data= {
         labels: labels,
         datasets: [
             {
                 label: 'Energy Usage (kWh)',
                 data: values,
-                // borderColor: 'rgba(75, 192, 192, 1)',
-                borderColor: '#1e454d',
+                // borderColor: borderColor,
+                borderColor: 'gray',
                 backgroundColor: '#d8d9c5',
                 fill: true,
-                tension: 0.4,
+                animation: {
+                    duration: 2000,
+                },
+                tension: 0,
             } as ChartDataset<'line', number[]>,
         ],
     };
 
-    const options = {
+    const options: ChartOptions<"line"> = {
         responsive: true,
         plugins: {
             legend: {
@@ -93,19 +101,20 @@ const EnergyUsageWidget: React.FC<EnergyUsageChartProps> = ({ chartData }) => {
     return (
         <>
             <div className={'border-2 border-textColor p-4 rounded-xl'}>
+                <Typography className={'text-2xl text-textColor font-bold my-2'}>Currency Predicted Value Over Time</Typography>
                 <div className={'w-full flex justify-center mb-0'}>
                     <nav aria-label="breadcrumb" className="w-max">
                         <ol className="flex w-full flex-wrap items-center rounded-md  px-4 py-2 text-bottle-green">
                             <li onClick={() => setTimeRange('day')} className={`flex cursor-pointer items-center text-sm transition-colors duration-300 ${timeRange === 'day' ? 'text-bottle-green font-bold underline' : 'text-bottle-green-light hover:text-bottle-green-light'}`}>
-                                <a className={'text-bottle-green'}>Day</a>
-                                <span className="pointer-events-none mx-2 text-bottle-green-light">/</span>
+                                <a className={'text-textColor'}>Day</a>
+                                <span className="pointer-events-none mx-2 text-textColor">/</span>
                             </li>
                             <li onClick={() => setTimeRange('month')} className={`flex cursor-pointer items-center text-sm transition-colors duration-300 ${timeRange === 'month' ? 'text-bottle-green font-bold underline' : 'text-bottle-green-light hover:text-bottle-green-light'}`}>
-                                <a className={'text-bottle-green'}>Month</a>
-                                <span className="pointer-events-none mx-2 text-bottle-green-light">/</span>
+                                <a className={'text-textColor'}>Month</a>
+                                <span className="pointer-events-none mx-2 text-textColor">/</span>
                             </li>
                             <li onClick={() => setTimeRange('year')} className={`flex cursor-pointer items-center text-sm transition-colors duration-300 ${timeRange === 'year' ? 'text-bottle-green font-bold underline' : 'text-bottle-green-light hover:text-bottle-green-light'}`}>
-                                <a className={'text-bottle-green'}>Year</a>
+                                <a className={'text-textColor'}>Year</a>
                             </li>
                         </ol>
                     </nav>
@@ -116,4 +125,4 @@ const EnergyUsageWidget: React.FC<EnergyUsageChartProps> = ({ chartData }) => {
     );
 };
 
-export default EnergyUsageWidget;
+export default PredictCurrencyChartWidget;
