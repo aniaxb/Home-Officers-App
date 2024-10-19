@@ -1,14 +1,11 @@
 package home.officers.backend.widgetbe.controller;
 
-import home.officers.backend.widgetbe.consts.TimeConsts;
-import home.officers.backend.widgetbe.model.domain.Customer;
+import home.officers.backend.widgetbe.model.dto.EnergyConsumptionCostDto;
 import home.officers.backend.widgetbe.model.dto.EnergyUsageDto;
 import home.officers.backend.widgetbe.service.EnergyUsageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.TreeMap;
 
 @RestController
 @RequestMapping("/api/usage")
@@ -17,9 +14,13 @@ public class EnergyUsageController {
 
     private final EnergyUsageService service;
 
-    @GetMapping(path = "/energy-costs")
-    public TreeMap<String, Double> getEnergyCosts(Customer customer) {
-        return service.computeConsumedEnergyCost(customer);
+    @GetMapping(path = "/energy-costs/{customer_id}")
+    public EnergyConsumptionCostDto getEnergyCosts(
+            @PathVariable("customer_id") Long customer_id,
+            @RequestParam String format,
+            @RequestParam String startTime,
+            @RequestParam  String endTime) {
+        return service.computeConsumedEnergyCost(customer_id, format, startTime, endTime);
     }
 
     @GetMapping(path = "/chart/{customerId}")
