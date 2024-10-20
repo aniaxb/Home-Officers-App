@@ -1,8 +1,11 @@
-// export type CurrencyBalance = Array<[string, number, number, number]>;
+export type CurrencyBalance = {
+        currency: string;
+        percent: number;
+        amount: number;
+        realValueInEur: number;
+}
 
-export type CurrencyBalance = Array<{
-    currency: string;
-    percent: number;
-    amount: number;
-    realValue: number;
-}>
+export type CurrencyData = {
+    balances: Array<CurrencyBalance>,
+    totalBalance: number
+};
