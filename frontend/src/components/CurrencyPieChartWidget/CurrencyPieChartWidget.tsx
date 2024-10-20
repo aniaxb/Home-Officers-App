@@ -19,14 +19,14 @@ function CurrencyPieChartWidget() {
 
     useEffect(() => {
         async function fetchCurrencyBalance() {
-            const dataset = await CurrencyBalanceAPI.MOCKgetCurrencyBalanceData();
+            const dataset = await CurrencyBalanceAPI.getCurrencyBalanceData(1)
 
             // Prepare the data for the chart
             const data = {
-                labels: dataset.map(item => item.currency),
+                labels: dataset.balances.map(item => item.currency),
                 datasets: [{
-                    data: dataset.map(item => item.amount),
-                    backgroundColor: ['#002E3C', '#1d5b6e', '#ffd700'], // Colors corresponding to each currency
+                    data: dataset.balances.map(item => item.realValueInEur),
+                    backgroundColor: ['#002E3C', '#1d5b6e', '#ffd700', '#008080'], // Colors corresponding to each currency
                 }]
             };
 
@@ -54,7 +54,7 @@ function CurrencyPieChartWidget() {
                     )}
                 </div>
             </div>
-            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: 750 EUR</Typography>
+            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: 750e</Typography>
         </div>
     );
 }
