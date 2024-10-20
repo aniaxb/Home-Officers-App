@@ -20,7 +20,6 @@ function CurrencyPieChartWidget() {
     useEffect(() => {
         async function fetchCurrencyBalance() {
             const dataset = await CurrencyBalanceAPI.getCurrencyBalanceData(1)
-            console.log(dataset)
 
             // Prepare the data for the chart
             const data = {
@@ -55,7 +54,7 @@ function CurrencyPieChartWidget() {
                     )}
                 </div>
             </div>
-            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: 750 EUR</Typography>
+            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: 750e</Typography>
         </div>
     );
 }
