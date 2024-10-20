@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import {Doughnut, Line} from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     LineElement,
@@ -97,11 +97,6 @@ const PredictCurrencyLineChart = () => {
         },
     };
 
-    // Handle loading state
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
     if (error) {
         return <p>{error}</p>;
     }
@@ -113,7 +108,11 @@ const PredictCurrencyLineChart = () => {
                 {chartData ? (
                     <Line data={chartData} options={options} />
                 ) : (
-                    <p>Loading...</p>
+                    <div className={'w-full flex items-center justify-center mb-0'}>
+                        <div className={'w-full h-full max-h-[26rem] flex justify-center items-center overflow-hidden'}>
+                            <p className={'text-2xl'}>Loading...</p>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>

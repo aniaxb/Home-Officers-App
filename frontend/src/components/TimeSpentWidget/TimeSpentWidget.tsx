@@ -23,7 +23,7 @@ function TimeSpentWidget() {
                 <Typography color="gray" className={'text-3xl font-bold my-2'}>{t('timeSpent')}</Typography>
                 <div className={'w-full flex flex-col mb-0 text-xl'}>
                     <div>
-                        <Typography><span className={'font-bold'}>{t('ourClients')}</span> {(timeSpent?.averageCustomersTimeInComparison / 60.0).toFixed(2)} min</Typography>
+                        <Typography><span className={'font-bold'}>{t('ourClients')}</span> {timeSpent?.averageCustomersTimeInComparison} %</Typography>
                     </div>
                     <div>
                         <Typography><span className={'font-bold'}>{t('averageClientsTime')}:</span> {(timeSpent?.customerAverageTime / 60.0).toFixed(2)} min</Typography>

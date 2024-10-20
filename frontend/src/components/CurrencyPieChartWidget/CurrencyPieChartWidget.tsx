@@ -52,7 +52,7 @@ function CurrencyPieChartWidget() {
                     {chartData ? (
                         <Doughnut data={chartData} ref={chartRef} options={options} />
                     ) : (
-                        <p>Loading...</p>
+                        <p className={'text-2xl'} >Loading...</p>
                     )}
                 </div>
             </div>
