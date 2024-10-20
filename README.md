@@ -26,6 +26,6 @@ docker-compose up
 
 ## Browsing the app
 Having successfully started the containsers, in order to browse the app, simply access this url:
-(http://127.0.0.1:5173/)
+(http://localhost:5173/)
 
 
