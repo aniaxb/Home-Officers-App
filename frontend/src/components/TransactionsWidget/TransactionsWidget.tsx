@@ -11,7 +11,7 @@ function TransactionsWidget() {
 
     useEffect(() => {
         async function fetchTransactionsData() {
-            const data = await TransactionsAPI.MOCKgetTransactionsData();
+            const data = await TransactionsAPI.getTransactionsData(1)
             setTransactions(data);
         }
 

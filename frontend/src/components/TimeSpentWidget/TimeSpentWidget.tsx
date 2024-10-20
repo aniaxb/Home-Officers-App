@@ -11,7 +11,7 @@ function TimeSpentWidget() {
 
     useEffect( () => {
         async function fetchTimeSpentData() {
-            const data = await TimeSpentAPI.MOCKgetTimeSpentData();
+            const data = await TimeSpentAPI.getTimeSpentData(1)
             setTimeSpent(data);
         }
         fetchTimeSpentData();
@@ -23,16 +23,16 @@ function TimeSpentWidget() {
                 <Typography color="gray" className={'text-3xl font-bold my-2'}>{t('timeSpent')}</Typography>
                 <div className={'w-full flex flex-col mb-0 text-xl'}>
                     <div>
-                        <Typography><span className={'font-bold'}>{t('ourClients')}</span> 20%</Typography>
+                        <Typography><span className={'font-bold'}>{t('ourClients')}</span> {(timeSpent?.averageCustomersTimeInComparison / 60.0).toFixed(2)} min</Typography>
                     </div>
                     <div>
-                        <Typography><span className={'font-bold'}>{t('averageClientsTime')}:</span> {timeSpent?.averageCustomersTime}</Typography>
+                        <Typography><span className={'font-bold'}>{t('averageClientsTime')}:</span> {(timeSpent?.customerAverageTime / 60.0).toFixed(2)} min</Typography>
                     </div>
                     <div>
-                        <Typography><span className={'font-bold'}>{t('yourAverageTime')}:</span> {timeSpent?.customerAverageTime}</Typography>
+                        <Typography><span className={'font-bold'}>{t('yourAverageTime')}:</span> {(timeSpent?.lastVisitDuration / 60.0).toFixed(2)} min</Typography>
                     </div>
                     <div>
-                        <Typography><span className={'font-bold'}>{t('trend')}:</span> {timeSpent?.trend}</Typography>
+                        <Typography><span className={'font-bold'}>{t('trend')}:</span> {timeSpent?.visitTrend} %</Typography>
                     </div>
                 </div>
             </div>

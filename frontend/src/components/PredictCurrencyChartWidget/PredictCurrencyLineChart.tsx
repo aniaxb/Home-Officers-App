@@ -38,7 +38,7 @@ const PredictCurrencyLineChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data: PredictCurrency = await PredictCurrencyAPI.MOCKgetPredictCurrency();
+                const data: PredictCurrency = await PredictCurrencyAPI.getPredictCurrency(100)
                 setChartData({
                     labels: [...data.actual.dates, ...data.future.dates],
                     datasets: [

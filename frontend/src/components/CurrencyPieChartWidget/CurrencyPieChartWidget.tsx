@@ -56,7 +56,7 @@ function CurrencyPieChartWidget() {
                     )}
                 </div>
             </div>
-            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: {balanceData?.totalBalance}</Typography>
+            <Typography className={'text-2xl text-center mt-4 font-bold'}>{t('totalBalance')}: {balanceData?.totalBalance.toFixed(2)} euro</Typography>
         </div>
     );
 }
