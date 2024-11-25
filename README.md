@@ -8,6 +8,8 @@
 - Currency Value Prediction
 - Transactions & Carbon Footprint
 - Time Spent On Platform
+- Light & Dark Theme
+- English and German Language Support
 
 ## Prerequisities
 
